@@ -234,7 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c059321d926528143b30bf15ad9a097d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToPool: {fileID: 0}
+  objectToPool: {fileID: 7367602676041534975, guid: cf42953eaf87b0f45acd7f792dbab90a,
+    type: 3}
   initialPoolSize: 10
 --- !u!114 &1403291709
 MonoBehaviour:
@@ -248,7 +249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c059321d926528143b30bf15ad9a097d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToPool: {fileID: 0}
+  objectToPool: {fileID: 8568964045346754858, guid: 1eef0e008dfdd4d49baafcd1f30d02f7,
+    type: 3}
   initialPoolSize: 5
 --- !u!4 &1403291710
 Transform:
