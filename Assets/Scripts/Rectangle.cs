@@ -1,10 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Rectangle : MonoBehaviour {
     public readonly HashSet<Connection> Connections = new HashSet<Connection>();
 
+    public static readonly Vector2 Size = new Vector2(2, 1);
+    
     Vector3 _lastPosition;
+
+    void Start() {
+        transform.localScale = new Vector3(Size.x, Size.y, transform.localScale.z);
+    }
 
     void Update() {
         var newPosition = transform.position;
