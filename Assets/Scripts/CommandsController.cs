@@ -30,7 +30,7 @@ public class CommandsController {
             _timeSinceLastClick = DoubleClickTime;
         } else {
             if (target.TryGetComponent(out Rectangle rectangle)) {
-                // _currentCommand = new DragRectangleCommand(rectangle, _connectionPool, _environmentProbe);
+                _currentCommand = new DragRectangleCommand(rectangle, _connectionPool, _environmentProbe);
             }
             _timeSinceLastClick = 0;
         }
@@ -43,8 +43,8 @@ public class CommandsController {
         _currentCommand?.OnDrag(position);
     }
 
-    public void OnButtonUp() {
-        _currentCommand?.OnButtonUp();
+    public void OnButtonUp(Vector2 position) {
+        _currentCommand?.OnButtonUp(position);
         _currentCommand = null;
     }
 

@@ -9,6 +9,8 @@ public class Connection : MonoBehaviour {
         this.target2 = target2;
         GetComponent<SpriteRenderer>().color = Color.Lerp(target1.GetComponent<SpriteRenderer>().color,
             target2.GetComponent<SpriteRenderer>().color, 0.5f);
+        
+        UpdatePosition();
     }
     
     public void UpdatePosition() {

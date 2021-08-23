@@ -25,7 +25,7 @@ public class InputController : MonoBehaviour {
         }
         
         if (Input.GetMouseButtonUp(0)) {
-            _commandsController.OnButtonUp();
+            _commandsController.OnButtonUp(position);
             return;
         }
 

@@ -20,6 +20,7 @@ namespace Commands {
                     _connectionPool.Release(connection.gameObject);
                 }
                 
+                rectangle.Connections.Clear();
                 _rectanglePool.Release(_target);
             } else if (_target.TryGetComponent(out Connection connection)) {
                 connection.target1.Connections.Remove(connection);
@@ -29,7 +30,7 @@ namespace Commands {
             }
         }
 
-        public void OnButtonUp() { }
+        public void OnButtonUp(Vector2 position) { }
 
         public void OnDrag(Vector2 position) { }
     }

@@ -19,7 +19,7 @@ namespace Commands {
             newRectangle.transform.position = position;
         }
 
-        public void OnButtonUp() { }
+        public void OnButtonUp(Vector2 position) { }
         public void OnDrag(Vector2 position) { }
     }
 }
