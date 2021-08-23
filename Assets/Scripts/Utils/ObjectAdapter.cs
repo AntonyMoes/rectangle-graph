@@ -4,6 +4,7 @@ namespace Utils {
     [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
     public class ObjectAdapter : MonoBehaviour {
         [SerializeField] new SpriteRenderer renderer;
+        [SerializeField] new BoxCollider2D collider;
 
         public Vector2 Position {
             get => transform.position;
@@ -16,8 +17,11 @@ namespace Utils {
         }
 
         public Vector2 Size {
-            get => transform.localScale;
-            set => transform.localScale = new Vector3(value.x, value.y, transform.localScale.z);
+            get => renderer.size;
+            set {
+                renderer.size = value;
+                collider.size = value;
+            }
         }
 
         public Color Color {
