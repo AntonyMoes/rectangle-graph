@@ -22,18 +22,22 @@ public class CommandsController {
         _environmentProbe = environmentProbe;
     }
 
-    public void OnButtonDown(Vector2 position, GameObject target) {
-        if (!target) {
+    public void OnButtonDown(Vector2 position, Either<Rectangle, Connection> target) {
+        if (target == null) {
             _currentCommand = new CreateRectangleCommand(_rectanglePool, _environmentProbe);
-        } else if (_timeSinceLastClick < DoubleClickTime &&
-                   (position - _lastClickPosition).magnitude < DoubleClickPositionDelta) {
-            _currentCommand = new DeleteCommand(target);
-            _timeSinceLastClick = DoubleClickTime;
         } else {
-            if (target.TryGetComponent(out ObjectAdapter adapter) && adapter.UsedBy is Rectangle rectangle) {
-                _currentCommand = new DragRectangleCommand(rectangle, _connectionPool, _environmentProbe);
+            if (_timeSinceLastClick < DoubleClickTime &&
+                (position - _lastClickPosition).magnitude < DoubleClickPositionDelta) {
+                _currentCommand = new DeleteCommand(target);
+                _timeSinceLastClick = DoubleClickTime;
+            } else {
+                target.Get(
+                    rectangle => {
+                        _currentCommand = new DragRectangleCommand(rectangle, _connectionPool, _environmentProbe);
+                    },
+                    _ => { });
+                _timeSinceLastClick = 0;
             }
-            _timeSinceLastClick = 0;
         }
 
         _lastClickPosition = position;

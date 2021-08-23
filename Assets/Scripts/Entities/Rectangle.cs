@@ -37,7 +37,7 @@ namespace Entities {
 
         public void CleanUp() {
             _adapter.UsedBy = null;
-            _rectanglePool.Release(_adapter.gameObject);
+            _rectanglePool.Release(_adapter);
         }
     }
 }

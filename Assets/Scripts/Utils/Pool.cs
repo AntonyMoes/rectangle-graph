@@ -49,5 +49,9 @@ namespace Utils {
 
             releasedObject.SetActive(false);
         }
+
+        public void Release<T>(T releasedComponent) where T : MonoBehaviour {
+            Release(releasedComponent.gameObject);
+        }
     }
 }

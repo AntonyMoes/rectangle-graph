@@ -44,25 +44,27 @@ public class EnvironmentProbe {
      * This method returns a rectangle only if no connections were overlapped
      * (because connections are rendered over rectangles)
      */
-    public GameObject GetTarget(Vector2 position) {
+    public Either<Rectangle, Connection> GetTarget(Vector2 position) {
         var overlappedCount = Physics2D.OverlapPointNonAlloc(position, _overlapped);
         if (overlappedCount == 0) {
             return null;
         }
 
-        GameObject rectangle = null;
+        Rectangle firstRectangle = null;
         for (var i = 0; i < overlappedCount; i++) {
             if (!_overlapped[i].TryGetComponent(out ObjectAdapter adapter)) {
                 continue;
             }
 
-            if (adapter.UsedBy is Connection) {
-                return _overlapped[i].gameObject;
+            if (adapter.UsedBy is Connection connection) {
+                return new Either<Rectangle, Connection>(connection);
             }
-
-            rectangle = _overlapped[i].gameObject;
+            
+            if (firstRectangle == null && adapter.UsedBy is Rectangle rectangle) {
+                firstRectangle = rectangle;
+            }
         } 
 
-        return rectangle;
+        return firstRectangle == null ? null : new Either<Rectangle, Connection>(firstRectangle);
     }
 }

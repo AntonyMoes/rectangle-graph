@@ -54,7 +54,7 @@ namespace Entities {
     
         public void CleanUp() {
             _adapter.UsedBy = null;
-            _connectionPool.Release(_adapter.gameObject);
+            _connectionPool.Release(_adapter);
         }
     }
 }
