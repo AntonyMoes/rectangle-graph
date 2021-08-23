@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnvironmentProbe {
     readonly LayerMask _rectangleMask;
@@ -16,7 +15,7 @@ public class EnvironmentProbe {
             return true;
         }
 
-        if (rectangleToIgnore && hitCount == 1 && _hits[0].transform.GetComponent<Rectangle>() == rectangleToIgnore) {
+        if (rectangleToIgnore != null && hitCount == 1 && _hits[0].transform.GetComponent<ObjectAdapter>().UsedBy == rectangleToIgnore) {
             return true;
         }
 
@@ -26,7 +25,11 @@ public class EnvironmentProbe {
     public Rectangle GetRectangleBesidesPassed(Vector2 position, Rectangle passed) {
         var overlappedCount = Physics2D.OverlapPointNonAlloc(position, _overlapped, _rectangleMask);
         for (var i = 0; i < overlappedCount; i++) {
-            var rectangle = _overlapped[i].GetComponent<Rectangle>();
+            if (!_overlapped[i].TryGetComponent(out ObjectAdapter adapter) ||
+                !(adapter.UsedBy is Rectangle rectangle)) {
+                continue;
+            }
+
             if (rectangle != passed) {
                 return rectangle;
             }
@@ -44,13 +47,20 @@ public class EnvironmentProbe {
         if (overlappedCount == 0) {
             return null;
         }
-        
+
+        GameObject rectangle = null;
         for (var i = 0; i < overlappedCount; i++) {
-            if (_overlapped[i].TryGetComponent(out Connection _)) {
+            if (!_overlapped[i].TryGetComponent(out ObjectAdapter adapter)) {
+                continue;
+            }
+
+            if (adapter.UsedBy is Connection) {
                 return _overlapped[i].gameObject;
             }
+
+            rectangle = _overlapped[i].gameObject;
         } 
 
-        return _overlapped[0].gameObject;
+        return rectangle;
     }
 }

@@ -33,6 +33,14 @@ public class Pool : MonoBehaviour {
         return objectToReturn;
     }
 
+    public T Get<T>() {
+        if (!objectToPool.TryGetComponent(out T _)) {
+            throw new ArgumentException($"Can't return component of type {typeof(T)}");
+        }
+
+        return Get().GetComponent<T>();
+    }
+
     public void Release(GameObject releasedObject) {
         if (!_pool.Contains(releasedObject)) {
             throw new ArgumentException("Passed object does not belong to this pool");

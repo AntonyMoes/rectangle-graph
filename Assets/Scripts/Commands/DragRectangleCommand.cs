@@ -4,7 +4,6 @@ using UnityEngine;
 namespace Commands {
     public class DragRectangleCommand : ICommand {
         readonly Rectangle _rectangle;
-        readonly SpriteRenderer _renderer;
         readonly Vector2 _startPosition;
         readonly Pool _connectionPool;
         readonly EnvironmentProbe _environmentProbe;
@@ -16,7 +15,6 @@ namespace Commands {
 
         public DragRectangleCommand(Rectangle rectangle, Pool connectionPool, EnvironmentProbe environmentProbe) {
             _rectangle = rectangle;
-            _renderer = _rectangle.GetComponent<SpriteRenderer>();
             _startPosition = rectangle.Position;
             _connectionPool = connectionPool;
             _environmentProbe = environmentProbe;
@@ -27,21 +25,19 @@ namespace Commands {
         }
 
         public void OnButtonUp(Vector2 position) {
-            _renderer.color = _renderer.color.WithAlpha(1);
+            _rectangle.Color = _rectangle.Color.WithAlpha(1);
             foreach (var connection in _rectangle.Connections) {
-                var connectionRenderer = connection.GetComponent<SpriteRenderer>();
-                connectionRenderer.color = connectionRenderer.color.WithAlpha(1);
+                connection.Color = connection.Color.WithAlpha(1);
             }
 
-            if (_environmentProbe.CanFitRectangle(_rectangle.transform.position, Rectangle.Size, _rectangle)) {
+            if (_environmentProbe.CanFitRectangle(_rectangle.Position, Rectangle.Size, _rectangle)) {
                return; 
             }
 
             if (_environmentProbe.GetRectangleBesidesPassed(position, _rectangle) is Rectangle other) {
-                var noSuchConnection = _rectangle.Connections.All(conn => conn.target1 != other && conn.target2 != other);
+                var noSuchConnection = _rectangle.Connections.All(conn => conn.Target1 != other && conn.Target2 != other);
                 if (noSuchConnection) {
-                    var connection = _connectionPool.Get().GetComponent<Connection>();
-                    connection.Setup(_rectangle, other);
+                    var connection = new Connection(_connectionPool, _rectangle, other);
                     _rectangle.Connections.Add(connection);
                     other.Connections.Add(connection);
                 }
@@ -59,10 +55,9 @@ namespace Commands {
 
             _hasMoved = true;
                 
-            _renderer.color = _renderer.color.WithAlpha(SeeThroughAlpha);
+            _rectangle.Color = _rectangle.Color.WithAlpha(SeeThroughAlpha);
             foreach (var connection in _rectangle.Connections) {
-                var connectionRenderer = connection.GetComponent<SpriteRenderer>();
-                connectionRenderer.color = connectionRenderer.color.WithAlpha(SeeThroughAlpha);
+                connection.Color = connection.Color.WithAlpha(SeeThroughAlpha);
             }
         }
     }

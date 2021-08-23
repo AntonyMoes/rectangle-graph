@@ -15,8 +15,8 @@ namespace Commands {
                 return;
             }
 
-            var newRectangle = _rectanglePool.Get(); 
-            newRectangle.transform.position = position;
+            var newRectangle = new Rectangle(_rectanglePool); 
+            newRectangle.Position = position;
         }
 
         public void OnButtonUp(Vector2 position) { }

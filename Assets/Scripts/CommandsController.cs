@@ -21,15 +21,14 @@ public class CommandsController {
     }
 
     public void OnButtonDown(Vector2 position, GameObject target) {
-        // Debug.Log($"Target is null: {target is null}; position: {position}\nSince last click: {_timeSinceLastClick}, {_timeSinceLastClick < DoubleClickTime}; Last click position: {_lastClickPosition}");
         if (!target) {
             _currentCommand = new CreateRectangleCommand(_rectanglePool, _environmentProbe);
         } else if (_timeSinceLastClick < DoubleClickTime &&
                    (position - _lastClickPosition).magnitude < DoubleClickPositionDelta) {
-            _currentCommand = new DeleteCommand(target, _rectanglePool, _connectionPool);
+            _currentCommand = new DeleteCommand(target);
             _timeSinceLastClick = DoubleClickTime;
         } else {
-            if (target.TryGetComponent(out Rectangle rectangle)) {
+            if (target.TryGetComponent(out ObjectAdapter adapter) && adapter.UsedBy is Rectangle rectangle) {
                 _currentCommand = new DragRectangleCommand(rectangle, _connectionPool, _environmentProbe);
             }
             _timeSinceLastClick = 0;
