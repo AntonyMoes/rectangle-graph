@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Utils;
 
 public class InputController : MonoBehaviour {
     [SerializeField] new Camera camera;

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Entities;
+using UnityEngine;
+using Utils;
 
 public class EnvironmentProbe {
     readonly LayerMask _rectangleMask;
