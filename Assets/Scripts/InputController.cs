@@ -7,10 +7,11 @@ public class InputController : MonoBehaviour {
     [SerializeField] LayerMask rectangleMask;
 
     CommandsController _commandsController;
+    EnvironmentProbe _environmentProbe;
 
     void Start() {
-        var environmentProbe = new EnvironmentProbe(rectangleMask);
-        _commandsController = new CommandsController(rectanglePool, connectionPool, environmentProbe);
+        _environmentProbe = new EnvironmentProbe(rectangleMask);
+        _commandsController = new CommandsController(rectanglePool, connectionPool, _environmentProbe);
     }
 
     void Update() {
@@ -19,8 +20,8 @@ public class InputController : MonoBehaviour {
         var position = camera.ScreenToWorldPoint(Input.mousePosition);
 
         if (Input.GetMouseButtonDown(0)) {
-            var hit = Physics2D.GetRayIntersection(camera.ScreenPointToRay(Input.mousePosition)); // TODO: return rectangle if only no connections were hit
-            _commandsController.OnButtonDown(position, hit.transform?.gameObject);
+            var target = _environmentProbe.GetTarget(camera.ScreenToWorldPoint(Input.mousePosition));
+            _commandsController.OnButtonDown(position, target);
             return;
         }
         

@@ -34,4 +34,23 @@ public class EnvironmentProbe {
 
         return null;
     }
+
+    /**
+     * This method returns a rectangle only if no connections were overlapped
+     * (because connections are rendered over rectangles)
+     */
+    public GameObject GetTarget(Vector2 position) {
+        var overlappedCount = Physics2D.OverlapPointNonAlloc(position, _overlapped);
+        if (overlappedCount == 0) {
+            return null;
+        }
+        
+        for (var i = 0; i < overlappedCount; i++) {
+            if (_overlapped[i].TryGetComponent(out Connection _)) {
+                return _overlapped[i].gameObject;
+            }
+        } 
+
+        return _overlapped[0].gameObject;
+    }
 }
