@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Rectangle : MonoBehaviour {
     public readonly HashSet<Connection> Connections = new HashSet<Connection>();
@@ -11,6 +12,10 @@ public class Rectangle : MonoBehaviour {
 
     void Start() {
         transform.localScale = new Vector3(Size.x, Size.y, transform.localScale.z);
+    }
+
+    void OnEnable() {
+        GetComponent<SpriteRenderer>().color = Random.ColorHSV();
     }
 
     void Update() {

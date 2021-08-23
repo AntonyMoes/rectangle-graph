@@ -7,6 +7,8 @@ public class Connection : MonoBehaviour {
     public void Setup(Rectangle target1, Rectangle target2) {
         this.target1 = target1;
         this.target2 = target2;
+        GetComponent<SpriteRenderer>().color = Color.Lerp(target1.GetComponent<SpriteRenderer>().color,
+            target2.GetComponent<SpriteRenderer>().color, 0.5f);
     }
     
     public void UpdatePosition() {
